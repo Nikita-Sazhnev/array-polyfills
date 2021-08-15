@@ -1,12 +1,9 @@
-// arr.forEach(function callback(currentValue, index, array) {
-//     //your iterator
-// }[, thisArg]);
+//arr.filter(callback(element[, index, [array]])[, thisArg])
 
 const arr = [1,2,3,4,5,6,7,8,9,0]
-arr[100] = 101
 
-if(!Array.prototype.myForEach) {
-  Array.prototype.myForEach = function (callback, thisArg) {
+if(!Array.prototype.myFilter) {
+  Array.prototype.myFilter = function (callback, thisArg) {
     if (this == null) {
       throw new TypeError();
     } 
@@ -16,6 +13,7 @@ if(!Array.prototype.myForEach) {
 
     let obj = Object(this)
     let len = obj.length
+    const res = []
     
     let t = this
     if (arguments.length > 1) {
@@ -24,12 +22,14 @@ if(!Array.prototype.myForEach) {
     
     for (let i = 0; i < len; i++) {
       if(i in obj)
-        callback.call(t, obj[i], i, obj)
+      	if(callback.call(t, obj[i], i, obj)) {
+      		res.push(obj[i])
+      }
     }
+
+    return res
   }
 }
 
-arr.myForEach((item, index, array) => {
-  console.log(index, item)
-  console.log(array)
-})
+const newArr = arr.myFilter((item) =>  item % 2 === 0)
+console.log(newArr)
